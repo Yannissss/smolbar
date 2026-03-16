@@ -46,9 +46,8 @@ i32 main(void) {
   u64 rx_bytesu, tx_bytesu;
   do {
     bar_len = 0;
-    memset(bar_buffer, 0, bar_cap);
-    bar_len += sprintf(bar_buffer, "/");
-
+    *bar_buffer = '\0';
+    
     // RX & TX //
     file_t rx_bytes, tx_bytes;
     u64 buf[2] = {rx_bytesu, tx_bytesu};
@@ -63,7 +62,7 @@ i32 main(void) {
     }
     rx_rate = (f64)(rx_bytesu - buf[0]) / 1024.f;
     tx_rate = (f64)(tx_bytesu - buf[1]) / 1024.f;
-    bar_len += sprintf(bar_buffer + bar_len, " rx: %.1f %s / tx: %.1f %s /",
+    bar_len += sprintf(bar_buffer + bar_len, " rx: %.1f %s | tx: %.1f %s |",
                        (rx_rate >= 1024.f) ? rx_rate / 1024.f : rx_rate,
                        (rx_rate >= 1024.f) ? "Mbps" : "Kbps",
                        (tx_rate >= 1024.f) ? tx_rate / 1024.f : tx_rate,
@@ -79,7 +78,7 @@ i32 main(void) {
     fs_total = fs_stats.f_bsize * fs_stats.f_blocks;
     fs_usedf = (f64)fs_used / 1024.f / 1024.f / 1024.f;
     fs_totalf = (f64)fs_total / 1024.f / 1024.f / 1024.f;
-    bar_len += sprintf(bar_buffer + bar_len, " SSD: %.1f of %.1f %s /",
+    bar_len += sprintf(bar_buffer + bar_len, " SSD: %.1f of %.1f %s |",
                        (fs_totalf >= 1024.f) ? fs_usedf / 1024.f : fs_usedf,
                        (fs_totalf >= 1024.f) ? fs_totalf / 1024.f : fs_totalf,
                        (fs_totalf >= 1024.f) ? "TiB" : "GiB");
@@ -98,14 +97,14 @@ i32 main(void) {
     }
     mem_usedf = (f64)(mem_total - mem_free) / 1024.f / 1024.f;
     mem_totalf = (f64)mem_total / 1024.f / 1024.f;
-    bar_len += sprintf(bar_buffer + bar_len, " RAM: %.1f of %.1f GiB /",
+    bar_len += sprintf(bar_buffer + bar_len, " RAM: %.1f of %.1f GiB |",
                        mem_usedf, mem_totalf);
 
     // Date & time //
     time_t now = (time_t)0;
     time(&now);
     bar_len += strftime(bar_buffer + bar_len, bar_cap - bar_len,
-                        " %A %d, %B %Y %H:%M:%S /", localtime(&now));
+                        " %A %d, %B %Y %H:%M:%S ", localtime(&now));
 
     // Display //
     printf("%s\n", bar_buffer);
