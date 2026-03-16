@@ -47,7 +47,7 @@ i32 main(void) {
   do {
     bar_len = 0;
     *bar_buffer = '\0';
-    
+
     // RX & TX //
     file_t rx_bytes, tx_bytes;
     u64 buf[2] = {rx_bytesu, tx_bytesu};
