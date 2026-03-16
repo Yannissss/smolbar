@@ -10,10 +10,7 @@
 typedef size_t usize;
 typedef char u8;
 typedef int32_t i32;
-typedef uint32_t u32;
-typedef int64_t i64;
 typedef uint64_t u64;
-typedef float f32;
 typedef double f64;
 
 #define UNPACK(err, fmt, ...)                                                  \
@@ -37,7 +34,7 @@ static inline file_t file_open(const char *name) {
 
 static inline void file_drop(file_t *self) { fclose(self->fd); }
 
-#define bar_pooltime ((u32)250)
+#define bar_pooltime ((u64)250)
 
 #define bar_cap ((usize)2048)
 static u8 bar_buffer[bar_cap];
